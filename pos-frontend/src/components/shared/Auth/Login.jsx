@@ -21,21 +21,36 @@ const Login = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
+      console.log('🔴 FORM SUBMITTED!', formData);
+      console.log('loginMutation:', loginMutation);
       loginMutation.mutate(formData);
     }
 
     const loginMutation = useMutation({
       mutationFn: (reqData) => login(reqData),
       onSuccess: (res) => {
+          console.log('Login mutation onSuccess triggered');
+          console.log('Full response:', res);
           const { data } = res;
-          console.log(data);
+          console.log('Data from response:', data);
+          
+          if (!data || !data.data) {
+            console.error('Invalid response structure');
+            enqueueSnackbar('Login failed - invalid response', { variant: "error" });
+            return;
+          }
+          
           const { _id, name, email, phone, role } = data.data;
+          console.log('User data:', { _id, name, email, phone, role });
           dispatch(setUser({ _id, name, email, phone, role }));
           navigate("/");
       },
       onError: (error) => {
+        console.log('Login mutation onError triggered');
+        console.error('Error object:', error);
         const { response } = error;
-        enqueueSnackbar(response.data.message, { variant: "error" });
+        console.log('Error response:', response);
+        enqueueSnackbar(response?.data?.message || 'Login failed', { variant: "error" });
       }
     })
 
