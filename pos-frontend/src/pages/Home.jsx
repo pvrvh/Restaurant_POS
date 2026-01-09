@@ -6,12 +6,14 @@ import { menuItems, foodCategories } from "../constants/menuData";
 import { FiPlus, FiMinus, FiShoppingCart } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import CheckoutAssistant from "../components/CheckoutAssistant";
+import CustomerNameModal from "../components/shared/CustomerNameModal";
 
 const Home = () => {
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [cart, setCart] = useState([]);
   const [selectedTable, setSelectedTable] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredItems = selectedCategory === "All" 
     ? menuItems 
@@ -53,19 +55,16 @@ const Home = () => {
       alert("Cart is empty!");
       return;
     }
+    setIsModalOpen(true);
+  };
 
-    const customerName = prompt("Enter customer name:");
-    if (!customerName || !customerName.trim()) {
-      alert("Customer name is required!");
-      return;
-    }
-
+  const handleConfirmOrder = (customerName) => {
     const subtotal = getTotalAmount();
     const tax = subtotal * 0.05;
     const total = subtotal + tax;
 
     dispatch(addOrder({
-      customerName: customerName.trim(),
+      customerName: customerName,
       tableNumber: selectedTable,
       items: cart,
       subtotal: subtotal,
@@ -75,6 +74,7 @@ const Home = () => {
 
     alert(`Order placed successfully for ${customerName}!\nTable ${selectedTable}\nTotal: ₹${total.toFixed(2)}`);
     setCart([]);
+    setIsModalOpen(false);
   };
 
   return (
@@ -223,6 +223,12 @@ const Home = () => {
           </button>
         </div>
       </div>
+
+      <CustomerNameModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmOrder}
+      />
     </section>
   );
 };
