@@ -1,3 +1,4 @@
+@"
 {
   "version": 2,
   "builds": [
@@ -8,9 +9,7 @@
     {
       "src": "pos-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "pos-frontend/dist" }
     }
   ],
   "routes": [
@@ -19,8 +18,12 @@
       "dest": "pos-backend/server.js"
     },
     {
+      "src": "/assets/(.*)",
+      "dest": "pos-frontend/dist/assets/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "pos-frontend/$1"
+      "dest": "pos-frontend/dist/index.html"
     }
   ]
-}
+}  
