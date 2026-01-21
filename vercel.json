@@ -1,29 +1,42 @@
-@"
 {
   "version": 2,
   "builds": [
     {
-      "src": "pos-backend/server.js",
+      "src": "api/*.js",
       "use": "@vercel/node"
     },
     {
       "src": "pos-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "pos-frontend/dist" }
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "pos-backend/server.js"
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth.js"
+    },
+    {
+      "src": "/api/menu/(.*)",
+      "dest": "/api/menu.js"
+    },
+    {
+      "src": "/api/orders/(.*)",
+      "dest": "/api/orders.js"
+    },
+    {
+      "src": "/api/tables/(.*)",
+      "dest": "/api/tables.js"
     },
     {
       "src": "/assets/(.*)",
-      "dest": "pos-frontend/dist/assets/$1"
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "pos-frontend/dist/index.html"
+      "dest": "/index.html"
     }
   ]
 }  
