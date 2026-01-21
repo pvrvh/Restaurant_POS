@@ -24,8 +24,8 @@ const ensureDbConnection = async () => {
   }
 };
 
-// Routes
-app.use('/api/menu', menuRoutes);
+// Routes - remove /api/menu prefix since Vercel routing already handles it
+app.use('/', menuRoutes);
 
 // Error handler
 app.use(errorHandler);

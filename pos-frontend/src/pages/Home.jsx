@@ -36,7 +36,7 @@ const Home = () => {
     setCart(cart.map(item => {
       if (item.id === itemId) {
         const newQuantity = item.quantity + change;
-        return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
+        return { ...item, quantity: newQuantity };
       }
       return item;
     }).filter(item => item.quantity > 0));

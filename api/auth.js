@@ -24,8 +24,8 @@ const ensureDbConnection = async () => {
   }
 };
 
-// Routes
-app.use('/api/auth', authRoutes);
+// Routes - remove /api/auth prefix since Vercel routing already handles it
+app.use('/', authRoutes);
 
 // Error handler
 app.use(errorHandler);
